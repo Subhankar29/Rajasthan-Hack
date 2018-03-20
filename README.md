@@ -1,6 +1,7 @@
 # Front end for Blockchain based smart insurance system.
 
-## A blockchain based solution for a person to easily buy and claim for insurance.
+## How to run
+Open the folder open the index.html in the web browser.
 
 ## Working:
 1. A person can register and login to the portal by using Adhaarcard number. 
