@@ -7,6 +7,7 @@
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
 	<link rel="stylesheet" href="css/style.css">
+
 </head>
 
 <body>
@@ -15,41 +16,48 @@
 		<form id="msform">
 			<!-- progressbar -->
 			<ul id="progressbar">
-				<li>LOGIN</li>
-				<li>INFORMATION</li>
-				<li>BUY INSURANCE</li>
+				<li v-bind:class="[CurrentActive == 1 && activeClass]">LOGIN</li>
+				<li v-bind:class="[CurrentActive == 2 && activeClass]">INFORMATION</li>
+				<li v-bind:class="[CurrentActive == 3 && activeClass]">BUY INSURANCE</li>
 			</ul>
 
-			<div></div>
 
-			<fieldset>
-				<h2 class="fs-title">Login</h2>
-				<h3 class="fs-subtitle">Login to Claim your Insurance</h3>
-				<input name="aadhaarCard" placeholder="Aadhaar Card" id="phoneNumber" v-model="mobileNumber" />
-				<input type="button" name="next" class="nextLog action-button" value="Login" id="login" v-on:click="login" />
-			</fieldset>
+			<div v-bind:class="[CurrentActive != 1 ? noneValue: blockValue]">
+				<fieldset>
+					<h2 class="fs-title">Login</h2>
+					<h3 class="fs-subtitle">Login to Claim your Insurance</h3>
+					<input name="aadhaarCard" placeholder="Aadhaar Card" id="phoneNumber" v-model="mobileNumber" />
+					<input type="button" name="next" class="nextLog action-button" value="Login" id="login" v-on:click="login" />
+				</fieldset>
+			</div>
 
-			<fieldset>
-				<h2 class="fs-title">Information</h2>
-				<ul>
-					<li v-for="(item, index) in TransactionList" key="index">
-						{{ item.status }} {{ item.balance }} {{ item.tokenName }}
-					</li>
-				</ul>
-				<div v-if="TransactionList.length > 0">
-					<input type="button" name="Add" class="next action-button" value="New Insurance" id="add" v-on:click="" />
-				</div>
-			</fieldset>
+			<div v-bind:class="[CurrentActive != 1 ? noneValue: blockValue]">
+				<fieldset>
+					<h2 class="fs-title">Information</h2>
+					<ul>
+						<li v-for="(item, index) in TransactionList" key="index">
+							{{ item.status }} {{ item.balance }} {{ item.tokenName }}
+						</li>
+					</ul>
+					<div v-if="TransactionList.length > 0">
+						<input type="button" name="Add" class="next action-button" value="New Insurance" id="add" v-on:click="" />
+					</div>
+				</fieldset>
+			</div>
 
-			<fieldset>
-				<h2 class="fs-title"> Buy Insurance</h2>
-				<h3 class="fs-subtitle">Buy insurance Accroding to your Area</h3>
-				<input type="text" v-model="amount" name="amount" placeholder="Amount" />
-				<select v-model="selected">
-					<option>SBI</option>
-					<option>HDF</option>
-				</select>
-			</fieldset>
+
+			<div v-bind:class="[CurrentActive != 1 ? noneValue: blockValue]">
+				<fieldset>
+					<h2 class="fs-title">Buy Insurance</h2>
+					<h3 class="fs-subtitle">Buy insurance Accroding to your Area</h3>
+					<input type="text" v-model="amount" name="amount" placeholder="Amount" />
+					<select v-model="selected">
+						<option>SBI</option>
+						<option>HDF</option>
+					</select>
+				</fieldset>
+			</div>
+		</form>
 		</form>
 	</div>
 
@@ -68,6 +76,9 @@
 				selected: 'SBI',
 				currentActive: 1,
 				activeClass: 'active',
+				hiddenClass: 'hidden',
+				noneValue: { display: 'none' },
+				blockValue: { display: 'block' },
 			},
 
 			mounted: function () {
@@ -112,7 +123,9 @@
 								setInterval(() => {
 									_this.loadTransactionList();
 								}, 5000);
-								this.currentActive = 2;
+
+								_this.currentActive = 2;
+								console.log(_this);
 							}
 						},
 						error: function (err) {
@@ -122,6 +135,7 @@
 				},
 
 				loadTransactionList() {
+					var _this = this;
 					const url = 'http://localhost:3000/getTransaction';
 					const mobileNumber = localStorage.getItem('mobileNumber');
 					$.ajax({
@@ -132,7 +146,7 @@
 						contentType: "application/json",
 						success: function (result) {
 							if (result && result.items) {
-								transactionList = result.items.slice();
+								_this.transactionList = result.items.slice();
 							}
 						},
 						error: function (err) {
@@ -147,6 +161,7 @@
 
 
 				makeInrDeposit() {
+					var _this = this;
 					const url = 'http://localhost:3000/getTramsaction';
 					const mobileNumber = localStorage.getItem('mobileNumber');
 					const amount = this.Amount;
@@ -160,7 +175,7 @@
 						contentType: "application/json",
 						success: function (result) {
 							if (result && result.transactionHash) {
-								this.currentActive = 2;
+								_this.currentActive = 2;
 							}
 						},
 						error: function (err) {
@@ -183,7 +198,7 @@
 						contentType: "application/json",
 						success: function (result) {
 							if (result && result.id) {
-								transactionList = result.items.slice();
+
 							}
 						},
 						error: function (err) {
