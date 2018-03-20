@@ -27,8 +27,8 @@
 				<fieldset>
 					<h2 class="fs-title">Login</h2>
 					<h3 class="fs-subtitle">Login to Claim your Insurance</h3>
-					<input name="aadhaarCard" placeholder="Aadhaar Card" id="phoneNumber" v-model="mobileNumber" />
-					<input type="button" name="next" class="next action-button" value="Login" id="login" v-on:click="login" />
+					<input placeholder="Aadhaar Card" v-model="mobileNumber" />
+					<input type="button" class="action-button" value="Login" v-on:click="login" />
 				</fieldset>
 			</div>
 
@@ -42,29 +42,30 @@
 								<h3>{{ item.tokenName }}</h3>
 							</td>
 							<td>
-								<h3>{{ item.balance }}</h3>
+								<h3>{{ item.balance || 0 }}</h3>
 							</td>
-							<td>
-								<button type="submit" id="ClaimSub" name="submit" class="action-button" value="CLAIM" v-on:click="()=>claim(item)" />
+							<td v-if="item.tokenName != 'MNY' && item.balance > 0">
+								<button type="button" class="action-button" value="Claim" id="add" v-on:click="()=>claim(item)" />
 							</td>
 						</tr>
 					</table>
-					<div v-if="TransactionList.length < 2">
-						<input type="button" name="Add" class="next action-button" value="New Insurance" id="add" v-on:click="onAddNewClick" />
+					<div v-if="TransactionList.length < 3">
+						<input type="button" class="action-button" value="New" id="add" v-on:click="onAddNewClick" />
 					</div>
 				</fieldset>
 			</div>
 
 			<div v-if="CurrentActive == 3">
 				<fieldset>
-					<h2 class="fs-title">Buy Insurance</h2>
-					<h3 class="fs-subtitle">Buy insurance Accroding to your Area</h3>
-					<input type="text" v-model="amount" name="amount" placeholder="Amount" />
-					<select v-model="selected">
-						<option>SBI</option>
-						<option>HDF</option>
-					</select>
-					<input type="button" name="Add" class="next action-button" value="New Insurance" id="add" v-on:click="makeInrDeposit" />
+					<div style="display:flex, flex-direction:column, align-items:center">
+						<h2 class="fs-title">Buy Insurance</h2>
+						<input v-model="amount" placeholder="Amount" />
+						<select v-model="selected">
+							<option>SBI</option>
+							<option>HDF</option>
+						</select>
+						<input type="button" class="action-button" value="Done" id="add" v-on:click="makeInrDeposit" />
+					</div>
 				</fieldset>
 			</div>
 
@@ -82,7 +83,7 @@
 			data: {
 				mobileNumber: '',
 				transactionList: [],
-				amount: 0,
+				amount: '',
 				selected: 'SBI',
 				currentActive: 1,
 				activeClass: 'active',
@@ -105,11 +106,11 @@
 				MobileNumber() {
 					return this.mobileNumber;
 				},
-				Anount() {
+				Amount() {
 					return this.amount;
 				},
 				Selected() {
-					return this.select;
+					return this.selected;
 				},
 				CurrentActive() {
 					return this.currentActive;
@@ -121,15 +122,17 @@
 				login() {
 					var _this = this;
 					const url = 'http://localhost:3000/login'
+					const mobileNumber = this.MobileNumber;
+
 					$.ajax({
 						type: 'POST',
 						url: url,
-						data: JSON.stringify({ mobileNumber: this.MobileNumber }),
+						data: JSON.stringify({ mobileNumber: mobileNumber }),
 						dataType: "json",
 						contentType: "application/json",
 						success: function (result) {
 							if (result) {
-								localStorage.setItem('mobileNumber', this.MobileNumber);
+								localStorage.setItem('mobileNumber', mobileNumber);
 								setInterval(() => {
 									_this.loadTransactionList();
 								}, 5000);
@@ -172,54 +175,49 @@
 
 				makeInrDeposit() {
 					var _this = this;
-					const url = 'http://localhost:3000/getTramsaction';
+					const url = 'http://localhost:3000/depositInr';
 					const mobileNumber = localStorage.getItem('mobileNumber');
 					const amount = this.Amount;
 					const selected = this.Selected;
-
-
-					console.log(mobileNumber, amount, selected);
-
-					// $.ajax({
-					// 	type: 'POST',
-					// 	url: url,
-					// 	data: JSON.stringify({ mobileNumber: mobileNumber, amount: amount, tokenName: selected }),
-					// 	dataType: "json",
-					// 	contentType: "application/json",
-					// 	success: function (result) {
-					// 		if (result && result.transactionHash) {
-					// 			_this.currentActive = 2;
-					// 		}
-					// 	},
-					// 	error: function (err) {
-					// 		console.log(err);
-					// 	}
-					// });
+					$.ajax({
+						type: 'POST',
+						url: url,
+						data: JSON.stringify({ mobileNumber: mobileNumber, amount: amount, tokenName: selected }),
+						dataType: "json",
+						contentType: "application/json",
+						success: function (result) {
+							if (result && result.transactionHash) {
+								_this.currentActive = 2;
+							}
+						},
+						error: function (err) {
+							console.log(err);
+						}
+					});
 				},
 
 				claim(item) {
+					var _this = this;
 					const url = 'http://localhost:3000/claimAmount';
 					const mobileNumber = localStorage.getItem('mobileNumber');
 					const depositId = item._id;
 					const tokenName = item.tokenName;
+					$.ajax({
+						type: 'POST',
+						url: url,
+						data: JSON.stringify({ mobileNumber: mobileNumber, depositId: depositId, tokenName: tokenName }),
+						dataType: "json",
+						contentType: "application/json",
+						success: function (result) {
+							console.log(result);
+							if (result && result.id) {
 
-					console.log(mobileNumber, depositId, tokenName)
-
-					// $.ajax({
-					// 	type: 'POST',
-					// 	url: url,
-					// 	data: JSON.stringify({ mobileNumber: mobileNumber, depositId: depositId, tokenName: tokenName }),
-					// 	dataType: "json",
-					// 	contentType: "application/json",
-					// 	success: function (result) {
-					// 		if (result && result.id) {
-
-					// 		}
-					// 	},
-					// 	error: function (err) {
-					// 		console.log(err);
-					// 	}
-					// });
+							}
+						},
+						error: function (err) {
+							console.log(err);
+						}
+					});
 				}
 			}
 		});
