@@ -17,7 +17,7 @@
 			<!-- progressbar -->
 			<ul id="progressbar">
 				<li v-bind:class="[CurrentActive == 1 && activeClass]">LOGIN</li>
-				<li v-bind:class="[CurrentActive == 2 && activeClass]">INFORMATION</li>
+				<li v-bind:class="[CurrentActive == 2 && activeClass]">INSURANCE</li>
 				<li v-bind:class="[CurrentActive == 3 && activeClass]">BUY INSURANCE</li>
 			</ul>
 
@@ -36,36 +36,33 @@
 			<div v-if="CurrentActive == 2">
 				<fieldset>
 					<h2 class="fs-title">Information</h2>
-					<table v-for="(item, index) in TransactionList" key="index">
-						<tr>
-							<td>
-								<h3>{{ item.tokenName }}</h3>
-							</td>
-							<td>
-								<h3>{{ item.balance || 0 }}</h3>
-							</td>
-							<td v-if="item.tokenName != 'MNY' && item.balance > 0">
-								<button type="button" class="action-button" value="Claim" id="add" v-on:click="()=>claim(item)" />
-							</td>
-						</tr>
-					</table>
+					<ol>
+						<li id="claiming" v-for="(item, index) in TransactionList" key="index">
+							<div style="flex:1; display:flex; align-items:center;">
+								<div style="flex:0.33">{{item.tokenName}}</div>
+								<div style="flex:0.33">{{item.balance}}</div>
+								<div style="flex:0.33" v-if="item.tokenName != 'MNY'">
+									<input v-if="item.balance > 0" type="button" name="Add" class="next action-button" value="Claim" id="add" v-on:click="()=> claim(item)"/>
+									<div v-else>{{item.status}}</div>
+								</div>
+							</div>
+						</li>
+					</ol>
 					<div v-if="TransactionList.length < 3">
-						<input type="button" class="action-button" value="New" id="add" v-on:click="onAddNewClick" />
+						<input type="button" name="Add" class="next action-button" value="New" id="add" v-on:click="onAddNewClick" />
 					</div>
 				</fieldset>
 			</div>
 
 			<div v-if="CurrentActive == 3">
 				<fieldset>
-					<div style="display:flex, flex-direction:column, align-items:center">
-						<h2 class="fs-title">Buy Insurance</h2>
-						<input v-model="amount" placeholder="Amount" />
-						<select v-model="selected">
-							<option>SBI</option>
-							<option>HDF</option>
-						</select>
-						<input type="button" class="action-button" value="Done" id="add" v-on:click="makeInrDeposit" />
-					</div>
+					<h2 class="fs-title">Buy Insurance</h2>
+					<input type="text" v-model="amount" name="amount" placeholder="Amount" />
+					<select v-model="selected" style=" display:  flex; width:  100%; height:  54px;">
+						<option>SBI</option>
+						<option>HDF</option>
+					</select>
+					<input type="button" name="Add" class="next action-button" value="Done" id="add " v-on:click="makeInrDeposit" />
 				</fieldset>
 			</div>
 

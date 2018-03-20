@@ -7,14 +7,33 @@
 html {
 	height: 100%;
 	/*Image only BG fallback*/
-	
+
 	/*background = gradient + image pattern combo*/
-	background: 
+	background:
 		linear-gradient(rgba(196, 102, 0, 0.6), rgba(155, 89, 182, 0.6));
 }
 
 body {
 	font-family: montserrat, arial, verdana;
+}
+
+#claiming {
+	list-style: none;
+	flex-direction: row;
+background: #ececec;
+padding: 1rem;
+position: relative;
+margin: 0 0 1rem 0;
+font-size: 0.9rem;
+padding-bottom: 1rem;
+}
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
 }
 /*form styles*/
 #msform {
@@ -26,13 +45,13 @@ body {
 #msform fieldset {
 	background: white;
 	border: 0 none;
-	border-radius: 3px;
-	box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+	border-radius: 8px;
+	box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.4);
 	padding: 20px 30px;
 	box-sizing: border-box;
 	width: 80%;
 	margin: 0 10%;
-	
+
 	/*stacking fieldsets above each other*/
 	position: relative;
 }
@@ -54,7 +73,7 @@ body {
 }
 /*buttons*/
 #msform .action-button {
-	width: 100px;
+	width: 100%;
 	background: #27AE60;
 	font-weight: bold;
 	color: white;
@@ -63,22 +82,27 @@ body {
 	cursor: pointer;
 	padding: 10px 5px;
 	margin: 10px 5px;
+	white-space: normal;
 }
 #msform .action-button:hover, #msform .action-button:focus {
 	box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
 }
 /*headings*/
 .fs-title {
-	font-size: 15px;
+	font-size: 20px;
 	text-transform: uppercase;
-	color: #2C3E50;
+	color: rgb(30, 38, 46);
 	margin-bottom: 10px;
 }
 .fs-subtitle {
 	font-weight: normal;
 	font-size: 13px;
-	color: #666;
+	color: rgb(80, 80, 80);
 	margin-bottom: 20px;
+}
+.dropSelect{
+	width: 100%;
+	display: flex;
 }
 /*progressbar*/
 #progressbar {
@@ -121,7 +145,7 @@ body {
 }
 #progressbar li:first-child:after {
 	/*connector not needed before the first step*/
-	content: none; 
+	content: none;
 }
 /*marking active/completed steps green*/
 /*The number of the step and the connector before it = green*/
@@ -129,6 +153,3 @@ body {
 	background: #27AE60;
 	color: white;
 }
-
-
-
