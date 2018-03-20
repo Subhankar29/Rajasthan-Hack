@@ -45,8 +45,8 @@ th {
 #msform fieldset {
 	background: white;
 	border: 0 none;
-	border-radius: 3px;
-	box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+	border-radius: 8px;
+	box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.4);
 	padding: 20px 30px;
 	box-sizing: border-box;
 	width: 80%;
@@ -73,7 +73,7 @@ th {
 }
 /*buttons*/
 #msform .action-button {
-	width: 100px;
+	width: 100%;
 	background: #27AE60;
 	font-weight: bold;
 	color: white;
@@ -89,16 +89,20 @@ th {
 }
 /*headings*/
 .fs-title {
-	font-size: 15px;
+	font-size: 20px;
 	text-transform: uppercase;
-	color: #2C3E50;
+	color: rgb(30, 38, 46);
 	margin-bottom: 10px;
 }
 .fs-subtitle {
 	font-weight: normal;
 	font-size: 13px;
-	color: #666;
+	color: rgb(80, 80, 80);
 	margin-bottom: 20px;
+}
+.dropSelect{
+	width: 100%;
+	display: flex;
 }
 /*progressbar*/
 #progressbar {
