@@ -2,55 +2,6 @@
 var current_fs, next_fs, nextLog, previous_fs; //fieldsets
 var left, opacity, scale; //fieldset properties which we will animate
 var animating; //flag to prevent quick multi-click glitches
-var BaseURL = "http://192.168.0.103:3000";
-
-$(document).ready(function () {
-  var xhttp = new XMLHttpRequest();
-  xhttp.open("POST", BaseURL + "/getTransaction", true);
-  xhttp.setRequestHeader("Content-type", "application/json");
-  xhttp.send(JSON.stringify({ phoneNumber: "1234567890" }));
-  var response = JSON.parse(xhttp.responseText);
-  if (response.items) {
-    for (i = 0; i < response.items.length; i++) {
-      if (response.items.tokenName != "MNY") {
-        if (response.items.status != "freezed") {
-          $('.fs-table').append("<div><tb><h3 class=\"tokenName\">" + response.items.balance + " " + response.items.tokenName + "</h3><button type=\"submit\" id=\"ClaimSub\" name=\"submit\" class=\"action-button\" value=\"CLAIM\" /></div></tb>");
-        } else {
-          $('.fs-table').append("<div><tb><h3 class=\"tokenName\">" + response.items.tokenName + "</h3><h2>Freezed</h2></div></tb>");
-        }
-      }
-    }
-  }
-  console.log(response.items);
-});
-
-$("#login").click(function () {
-  var xhttp = new XMLHttpRequest();
-  var phone = (document.getElementById('phoneNumber').value);
-  console.log(phone);
-  xhttp.open("POST", BaseURL + "/login", false);
-  xhttp.setRequestHeader("Content-type", "application/json");
-  xhttp.send(JSON.stringify({ mobileNumber: phone }));
-  // xhttp.send();
-  var response = JSON.parse(xhttp.responseText);
-  console.log(response);
-  if (response.id) {
-    sessionStorage.setItem("mobile", phone);
-    nextLog = $(".nextLog")
-      .parent()
-      .next();
-
-    xhttp.open("POST", BaseURL + "/getTransaction", true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify({ phoneNumber: sessionStorage.getItem("mobile") }));
-    var response = JSON.parse(xhttp.responseText);
-    console.log(response);
-
-  } else {
-    alert("This user is not registered with us");
-  }
-
-});
 
 $(".next").click(function () {
   if (animating) return false;
@@ -140,12 +91,4 @@ $(".previous").click(function () {
       easing: "easeInOutBack"
     }
   );
-});
-
-$("#ClaimSub").click(function () {
-  xhttp.open("POST", BaseURL + "/getTransaction", true);
-  xhttp.setRequestHeader("Content-type", "application/json");
-  xhttp.send(JSON.stringify({ phoneNumber: sessionStorage.getItem("mobile") }));
-  var response = JSON.parse(xhttp.responseText);
-  console.log(response);
 });
