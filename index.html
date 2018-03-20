@@ -22,31 +22,40 @@
 			</ul>
 
 
-			<div v-bind:class="[CurrentActive != 1 ? noneValue: blockValue]">
+
+			<div v-if="CurrentActive == 1">
 				<fieldset>
 					<h2 class="fs-title">Login</h2>
 					<h3 class="fs-subtitle">Login to Claim your Insurance</h3>
 					<input name="aadhaarCard" placeholder="Aadhaar Card" id="phoneNumber" v-model="mobileNumber" />
-					<input type="button" name="next" class="nextLog action-button" value="Login" id="login" v-on:click="login" />
+					<input type="button" name="next" class="next action-button" value="Login" id="login" v-on:click="login" />
 				</fieldset>
 			</div>
 
-			<div v-bind:class="[CurrentActive != 1 ? noneValue: blockValue]">
+
+			<div v-if="CurrentActive == 2">
 				<fieldset>
 					<h2 class="fs-title">Information</h2>
-					<ul>
-						<li v-for="(item, index) in TransactionList" key="index">
-							{{ item.status }} {{ item.balance }} {{ item.tokenName }}
-						</li>
-					</ul>
-					<div v-if="TransactionList.length > 0">
-						<input type="button" name="Add" class="next action-button" value="New Insurance" id="add" v-on:click="" />
+					<table v-for="(item, index) in TransactionList" key="index">
+						<tr>
+							<td>
+								<h3>{{ item.tokenName }}</h3>
+							</td>
+							<td>
+								<h3>{{ item.balance }}</h3>
+							</td>
+							<td>
+								<button type="submit" id="ClaimSub" name="submit" class="action-button" value="CLAIM" v-on:click="()=>claim(item)" />
+							</td>
+						</tr>
+					</table>
+					<div v-if="TransactionList.length < 2">
+						<input type="button" name="Add" class="next action-button" value="New Insurance" id="add" v-on:click="onAddNewClick" />
 					</div>
 				</fieldset>
 			</div>
 
-
-			<div v-bind:class="[CurrentActive != 1 ? noneValue: blockValue]">
+			<div v-if="CurrentActive == 3">
 				<fieldset>
 					<h2 class="fs-title">Buy Insurance</h2>
 					<h3 class="fs-subtitle">Buy insurance Accroding to your Area</h3>
@@ -55,9 +64,10 @@
 						<option>SBI</option>
 						<option>HDF</option>
 					</select>
+					<input type="button" name="Add" class="next action-button" value="New Insurance" id="add" v-on:click="makeInrDeposit" />
 				</fieldset>
 			</div>
-		</form>
+
 		</form>
 	</div>
 
@@ -167,21 +177,24 @@
 					const amount = this.Amount;
 					const selected = this.Selected;
 
-					$.ajax({
-						type: 'POST',
-						url: url,
-						data: JSON.stringify({ mobileNumber: mobileNumber }),
-						dataType: "json",
-						contentType: "application/json",
-						success: function (result) {
-							if (result && result.transactionHash) {
-								_this.currentActive = 2;
-							}
-						},
-						error: function (err) {
-							console.log(err);
-						}
-					});
+
+					console.log(mobileNumber, amount, selected);
+
+					// $.ajax({
+					// 	type: 'POST',
+					// 	url: url,
+					// 	data: JSON.stringify({ mobileNumber: mobileNumber, amount: amount, tokenName: selected }),
+					// 	dataType: "json",
+					// 	contentType: "application/json",
+					// 	success: function (result) {
+					// 		if (result && result.transactionHash) {
+					// 			_this.currentActive = 2;
+					// 		}
+					// 	},
+					// 	error: function (err) {
+					// 		console.log(err);
+					// 	}
+					// });
 				},
 
 				claim(item) {
@@ -190,21 +203,23 @@
 					const depositId = item._id;
 					const tokenName = item.tokenName;
 
-					$.ajax({
-						type: 'POST',
-						url: url,
-						data: JSON.stringify({ mobileNumber: mobileNumber }),
-						dataType: "json",
-						contentType: "application/json",
-						success: function (result) {
-							if (result && result.id) {
+					console.log(mobileNumber, depositId, tokenName)
 
-							}
-						},
-						error: function (err) {
-							console.log(err);
-						}
-					});
+					// $.ajax({
+					// 	type: 'POST',
+					// 	url: url,
+					// 	data: JSON.stringify({ mobileNumber: mobileNumber, depositId: depositId, tokenName: tokenName }),
+					// 	dataType: "json",
+					// 	contentType: "application/json",
+					// 	success: function (result) {
+					// 		if (result && result.id) {
+
+					// 		}
+					// 	},
+					// 	error: function (err) {
+					// 		console.log(err);
+					// 	}
+					// });
 				}
 			}
 		});
