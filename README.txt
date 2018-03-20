@@ -1,2 +1,3 @@
+Blockchain based smart insurance system.
 A web portal for the person to easily buy and claim for insurance.
 A person can register and login to the portal by using Adhaarcard number. To buy a new insurance the person has to provide his or her mobile number, the amount of insurance the person wants to do and the type of token for example SBI and HDF. After successfully purchasing the insurance the equivalent token will be given to the farmer. When the person's property is by a hit by a natural calamity like drought or flood the farmer in this case can claim from the web portal for the insurance amount. 
