@@ -1,6 +1,6 @@
-#Blockchain based smart insurance system.
+# Blockchain based smart insurance system.
 
-##A blockchain based solutionfor a person to easily buy and claim for insurance.
+## A blockchain based solutionfor a person to easily buy and claim for insurance.
 
 ##Steps to buy and claim insurance:
 A person can register and login to the portal by using Adhaarcard number. 
