@@ -2,7 +2,7 @@
 
 ## A blockchain based solutionfor a person to easily buy and claim for insurance.
 
-##Steps to buy and claim insurance:
+## Steps to buy and claim insurance:
 A person can register and login to the portal by using Adhaarcard number. 
 
 1. To buy a new insurance the person has to provide his or her mobile number, the amount of insurance and the type of token (for example SBI and HDF). 
