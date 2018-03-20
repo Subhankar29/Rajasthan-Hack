@@ -36,19 +36,37 @@
 			<div v-if="CurrentActive == 2">
 				<fieldset>
 					<h2 class="fs-title">Information</h2>
-					<table v-for="(item, index) in TransactionList" key="index">
+					<ol>
+						<li id="claiming">
+							<div style="flex:1; display:flex; align-items:center;">
+							<div style="flex:0.33">HDFC</div>
+							<div style="flex:0.33">1000</div>
+							<div style="flex:0.33"><input type="button" name="Add" class="next action-button" value="CLAIM" id="add" v-on:click="onAddNewClick" /></div>
+						</div>
+					</li>
+				</ol>
+<!--        	<table v-for="(item, index) in TransactionList" key="index">-->
+						<!-- <table key="index" id="claiming">
+
+							<th>
+								<td>Token Name</td>
+								<td> Total Token </td>
+								<td> Claim </td>
 						<tr>
-							<td>
-								<h3>{{ item.tokenName }}</h3>
+							<td >
+								<h3>{{ item.tokenName }}</h3>-->
+								<!-- <h3>HDFC</h3>
 							</td>
 							<td>
-								<h3>{{ item.balance }}</h3>
+								<h3>{{ item.balance }}</h3>-->
+								<!-- <h3>1000</h3>
 							</td>
-							<td>
-								<button type="submit" id="ClaimSub" name="submit" class="action-button" value="CLAIM" v-on:click="()=>claim(item)" />
+							<td> -->
+								<!--<button type="submit" id="ClaimSub" name="submit" class="action-button" value="CLAIM" v-on:click="()=>claim(item)" />-->
+							<!-- <input type="button" name="Add" class="next action-button" value="CLAIM" id="add" v-on:click="onAddNewClick" />
 							</td>
 						</tr>
-					</table>
+					</table> -->
 					<div v-if="TransactionList.length < 2">
 						<input type="button" name="Add" class="next action-button" value="New Insurance" id="add" v-on:click="onAddNewClick" />
 					</div>
@@ -84,7 +102,7 @@
 				transactionList: [],
 				amount: 0,
 				selected: 'SBI',
-				currentActive: 1,
+				currentActive: 2,
 				activeClass: 'active',
 				hiddenClass: 'hidden',
 				noneValue: { display: 'none' },

@@ -7,14 +7,33 @@
 html {
 	height: 100%;
 	/*Image only BG fallback*/
-	
+
 	/*background = gradient + image pattern combo*/
-	background: 
+	background:
 		linear-gradient(rgba(196, 102, 0, 0.6), rgba(155, 89, 182, 0.6));
 }
 
 body {
 	font-family: montserrat, arial, verdana;
+}
+
+#claiming {
+	list-style: none;
+	flex-direction: row;
+background: #ececec;
+padding: 1rem;
+position: relative;
+margin: 0 0 1rem 0;
+font-size: 0.9rem;
+padding-bottom: 1rem;
+}
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
 }
 /*form styles*/
 #msform {
@@ -32,7 +51,7 @@ body {
 	box-sizing: border-box;
 	width: 80%;
 	margin: 0 10%;
-	
+
 	/*stacking fieldsets above each other*/
 	position: relative;
 }
@@ -63,6 +82,7 @@ body {
 	cursor: pointer;
 	padding: 10px 5px;
 	margin: 10px 5px;
+	white-space: normal;
 }
 #msform .action-button:hover, #msform .action-button:focus {
 	box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
@@ -121,7 +141,7 @@ body {
 }
 #progressbar li:first-child:after {
 	/*connector not needed before the first step*/
-	content: none; 
+	content: none;
 }
 /*marking active/completed steps green*/
 /*The number of the step and the connector before it = green*/
@@ -129,6 +149,3 @@ body {
 	background: #27AE60;
 	color: white;
 }
-
-
-
